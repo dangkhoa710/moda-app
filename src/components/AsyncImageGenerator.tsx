@@ -18,10 +18,7 @@ function ImageGenerator(props: ImageGeneratorProps) {
       .replace(/\s+/g, " ")
       .replace(/,\s*$/, "")
       .trim();
-    formData.append(
-      "prompt",
-      "A short-sleeved shirt with a bold pattern, paired with light-colored khaki shorts.Complete the look with dynamic white sneakers, ideal for comfortable outdoor activities. Use colors: #F08080, #FAEBD7, #FFF"
-    );
+    formData.append("prompt", cleanPrompt);
     formData.append("output_format", "webp");
 
     const response = await fetch(

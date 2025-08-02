@@ -33,12 +33,12 @@ export function TimeLineItem(props: TimeLineItemProps) {
   ];
 
   return (
-    <div id={id} style={{ display: "flex", alignItems: "center" }}>
-      <div style={{ display: "flex", alignItems: "center" }}>
+    <div id={id} style={{ display: "flex", alignItems: "center", width: "100%" }}>
+      <div style={{ display: "flex", alignItems: "center", width: "70%" }}>
         <TimePicker
           value={defaultFromTime}
           format={FORMAT_TIME}
-          style={{ height: "2.5rem" }}
+          style={{ height: "2.5rem",width: "50%" }}
           onChange={(time) =>
             handleChangeDefaultInformation &&
             handleChangeDefaultInformation(
@@ -51,7 +51,7 @@ export function TimeLineItem(props: TimeLineItemProps) {
         <TimePicker
           value={defaultToTime}
           format={FORMAT_TIME}
-          style={{ height: "2.5rem" }}
+          style={{ height: "2.5rem",width: "50%" }}
           onChange={(time) =>
             handleChangeDefaultInformation &&
             handleChangeDefaultInformation("toTime", time ? dayjs(time) : null)
@@ -59,7 +59,7 @@ export function TimeLineItem(props: TimeLineItemProps) {
         />
       </div>
       <Select
-        style={{ width: "10rem", marginLeft: "0.5rem", height: "2.5rem" }}
+        style={{marginLeft: "0.5rem", height: "2.5rem", width: handleDeleteItem ? "20%" : "30%" }}
         options={targetList}
         value={defaultTargetSelected}
         onChange={(value) =>
@@ -76,16 +76,15 @@ export function TimeLineItem(props: TimeLineItemProps) {
             alignSelf: "end",
             height: "2.5rem",
             marginLeft: "0.5rem",
-            backgroundColor: "#52c41a",
+            backgroundColor: "#F28076",
             padding: "0 1rem",
-            borderColor: "#52c41a",
+            borderColor: "#F28076",
             borderRadius: "0.5rem",
             boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
+            width : "10%"
           }}
         />
-      ) : (
-        <div style={{ width: "3.65rem" }} />
-      )}
+      ) : null }
     </div>
   );
 }

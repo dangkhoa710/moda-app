@@ -5,11 +5,15 @@ import { ClockCircleOutlined } from "@ant-design/icons";
 import { DOT_COLORS } from "../constants/Suggestion";
 import { useCurrentPosition } from "../hooks/useCurrentPositon";
 import { useState } from "react";
+import { Button } from "antd";
+import { useNavigate } from "react-router-dom";
 
 export interface SchedulesProps {
   schedules: Schedule[];
 }
 export function Schedules(props: SchedulesProps) {
+  const navigate = useNavigate();
+
   const { schedules } = props;
   const pos = useCurrentPosition();
   const [activeIndex, setActiveIndex] = useState<number>(-1);
@@ -32,5 +36,10 @@ export function Schedules(props: SchedulesProps) {
     color: DOT_COLORS[4],
   }));
 
-  return <Timeline items={[...items]} mode="left" />;
+  return (
+    <div style={{ padding: "1rem" }}>
+      <Timeline items={items} mode="left" />
+    </div>
+  );
+
 }

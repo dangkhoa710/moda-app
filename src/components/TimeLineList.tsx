@@ -6,6 +6,12 @@ import dayjs from "dayjs";
 import { v4 as uuidv4 } from "uuid";
 import daLatImage from "../assets/images/da_lat.png";
 import { Schedules } from "./Schedules";
+import {useNavigate} from "react-router-dom";
+import {LocationItem, readLocationsFromGoogleSheetWithoutDistance} from "../services/locationService";
+import {getCurrentPosition } from "../utils/geo";
+import { getNearestLocation } from '../utils/location';
+import { useEffect } from "react";
+
 
 export interface InformationState {
   id?: string;
@@ -27,9 +33,28 @@ export interface Schedule {
 }
 
 export function TimeLineList() {
+  const [loadingSchedule, setLoadingSchedule] = useState(false);
+  const navigate = useNavigate();
   const [informationItems, setInformationItems] = useState<InformationState[]>(
     []
   );
+
+  useEffect(() => {
+    const cached = localStorage.getItem("moda_schedule");
+    if (cached) {
+      const schedules: Schedule[] = JSON.parse(cached);
+      const converted = schedules.map((s) => ({
+        id: uuidv4(),
+        fromTime: dayjs(s.fromTime, "HH:mm:ss"),
+        toTime: dayjs(s.toTime, "HH:mm:ss"),
+        target: s.target,
+        color: "#339AF0",
+      }));
+      setInformationItems(converted);
+    }
+  }, []);
+
+
   const [defaultInformation, setDefaultInformation] =
     useState<InformationState>({
       id: undefined,
@@ -99,7 +124,7 @@ export function TimeLineList() {
           </div>
         ),
         dot: <ClockCircleOutlined style={{ fontSize: "16px" }} />,
-        color: "#339AF0",
+        color: "#4EB09B",
       },
     ],
     [defaultInformation]
@@ -123,40 +148,92 @@ export function TimeLineList() {
       color: item.color,
     }));
   }, [informationItems]);
-  const handleScheduleToday = () => {
-    setSchedules([
-      {
-        fromTime: "07:00:00",
-        toTime: "08:00:00",
-        target: "An",
-        location_name: "quan an",
-        location_lat: "1094290434",
-        location_lng: "1094290434",
-        location_address: "1094290434",
-        location_note: "~~~",
-      },
-      {
-        fromTime: "08:00:00",
-        toTime: "12:00:00",
-        target: "Di",
-        location_name: "quan an",
-        location_lat: "1094290434",
-        location_lng: "1094290434",
-        location_address: "1094290434",
-        location_note: "~~~",
-      },
-      {
-        fromTime: "12:00:00",
-        toTime: "13:00:00",
-        target: "Owr",
-        location_name: "quan an",
-        location_lat: "1094290434",
-        location_lng: "1094290434",
-        location_address: "1094290434",
-        location_note: "~~~",
-      },
-    ]);
+  const handleScheduleToday = async () => {
+    try {
+      setLoadingSchedule(true);
+      const currentLocation = await getCurrentPosition();
+
+      const allItems = [...informationItems];
+      if (
+        defaultInformation.fromTime &&
+        defaultInformation.toTime &&
+        defaultInformation.target
+      ) {
+        allItems.push({
+          ...defaultInformation,
+          id: "default-temporary",
+          color: "#339AF0",
+        });
+      }
+
+      const scheduleInput = allItems.map((item) => ({
+        fromTime: item.fromTime?.format("HH:mm:ss") || "",
+        toTime: item.toTime?.format("HH:mm:ss") || "",
+        target: item.target || "",
+      }));
+
+
+      const updatedSchedule: Schedule[] = [];
+      let currentPos = currentLocation;
+      const usedLocations: Set<string> = new Set();
+
+      for (const item of scheduleInput) {
+        let matchedLocation: LocationItem | null = null;
+        let locationList: LocationItem[] = [];
+
+        if (item.target === 'An') {
+          locationList = await readLocationsFromGoogleSheetWithoutDistance(
+            process.env.REACT_APP_GOOGLE_SHEET_ID!,
+            'Ăn'
+          );
+        } else if (item.target === 'Di') {
+          locationList = await readLocationsFromGoogleSheetWithoutDistance(
+            process.env.REACT_APP_GOOGLE_SHEET_ID!,
+            'Đi'
+          );
+        } else if (item.target === 'Owr') {
+          locationList = await readLocationsFromGoogleSheetWithoutDistance(
+            process.env.REACT_APP_GOOGLE_SHEET_ID!,
+            'Ở'
+          );
+        }
+
+        const filtered = locationList.filter(
+          (loc) => !usedLocations.has(loc.name)
+        );
+
+        matchedLocation = getNearestLocation(currentPos, filtered);
+
+        if (matchedLocation) {
+          usedLocations.add(matchedLocation.name);
+          currentPos = {
+            lat: matchedLocation.lat,
+            lng: matchedLocation.lng,
+          };
+        }
+
+        updatedSchedule.push({
+          ...item,
+          location_name: matchedLocation?.name || '',
+          location_lat: String(matchedLocation?.lat || ''),
+          location_lng: String(matchedLocation?.lng || ''),
+          location_address: matchedLocation?.address || '',
+          location_note: matchedLocation?.note || '',
+        });
+      }
+
+      setSchedules(updatedSchedule);
+      const SCHEDULE_KEY = "moda_schedule";
+      localStorage.setItem(SCHEDULE_KEY, JSON.stringify(updatedSchedule));
+      navigate("/schedules");
+
+    } catch (err) {
+      console.error("Không thể tạo lịch trình:", err);
+    } finally {
+      setLoadingSchedule(false);
+    }
   };
+
 
   const [schedules, setSchedules] = useState<Schedule[]>([]);
   const content = useMemo(() => {
@@ -170,29 +247,33 @@ export function TimeLineList() {
             marginTop: "1rem",
             alignSelf: "end",
             height: "2.5rem",
-            backgroundColor: "#52c41a",
+            backgroundColor: "#4EB09B",
             padding: "0 1rem",
-            borderColor: "#52c41a",
+            borderColor: "#4EB09B",
             borderRadius: "0.5rem",
             boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
+            fontSize: "1rem",
+            fontWeight: "bold"
           }}
           onClick={handleAddItem}
         >
-          Thêm mới
+          Thêm mốc thời gian
         </Button>
         <Button
           type="primary"
-          icon={<PlusOutlined />}
+          loading={loadingSchedule}
           style={{
             marginTop: "1rem",
             alignSelf: "end",
             width: "100%",
             height: "2.5rem",
-            backgroundColor: "#52c41a",
+            backgroundColor: "#368070",
             padding: "0 1rem",
-            borderColor: "#52c41a",
+            borderColor: "#368070",
             borderRadius: "0.5rem",
             boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
+            fontSize: "1rem",
+            fontWeight: "bold"
           }}
           onClick={handleScheduleToday}
         >
@@ -200,17 +281,39 @@ export function TimeLineList() {
         </Button>
       </>
     ) : (
-      <Schedules schedules={schedules} />
+      <>
+        <div style={{textAlign: "right", marginBottom: 16}}>
+          <Button style={{ backgroundColor: "#2d6a5c" , color:"#fff", borderColor: "#2d6a5c", fontWeight:"bold", marginRight: "0.5rem" }} onClick={() => setSchedules([])}>
+            ✏️ Quay lại chỉnh sửa
+          </Button>
+          <Button
+            style={{ backgroundColor: "#F28076" , color:"#fff", borderColor: "#F28076", fontWeight:"bold"}}
+            onClick={() => {
+              localStorage.removeItem("moda_schedule");
+              setSchedules([]);
+              setInformationItems([]);
+            }}
+          >
+            🗑 Xoá lịch trình
+          </Button>
+        </div>
+        <Schedules schedules={schedules}/>
+      </>
     );
   }, [schedules, items, defaultItem]);
 
   return (
-    <div style={{ maxWidth: "80%", padding: "1rem" }}>
-      <div style={{ display: "flex", margin: "0 auto", maxWidth: "30.625rem" }}>
-        <div style={{ display: "flex", flexDirection: "column" }}>
+    <div style={{ display: "flex", padding: "1rem"}}>
+      <div style={{ display: "flex", margin: "0 auto", maxWidth: "1000px" }}>
+        <div style={{ display: "flex", flexDirection: "column" , width: "100%"}}>
+          <div style={{ marginBottom: "1rem" , width: "100%"}}>
+            <Button onClick={() => navigate('/menu')} style={{ marginBottom: 16 }}>
+              ← Quay lại
+            </Button>
+          </div>
           <h1 style={{ whiteSpace: "nowrap" }}>Lập kế hoạch du lịch Đà Lạt</h1>
           <span style={{ marginBottom: "2rem", fontSize: "1.1rem" }}>
-            Hoạt động hằng ngày
+            Thời gian hoạt động
           </span>
           {content}
         </div>
@@ -220,11 +323,12 @@ export function TimeLineList() {
             flexDirection: "column",
             justifyContent: "center",
             marginLeft: "3rem",
+            width: "30%"
           }}
         >
           <div
             style={{
-              backgroundColor: "#f0f9f7",
+              backgroundColor: "#ffefdf",
               border: "1px solid #d9f7be",
               borderRadius: "1rem",
               boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
@@ -248,19 +352,22 @@ export function TimeLineList() {
             />
             <h2
               style={{
-                color: "#1890ff",
-                fontSize: "1.75rem",
+                color: "#4EB09B",
                 marginBottom: "1rem",
+                fontWeight: 'bold'
               }}
             >
-              🏞️ Đà Lạt - Thành phố ngàn hoa
+              🏞️ Đà Lạt
+              <br/>
+              Thành phố ngàn hoa
             </h2>
-            <p style={{ fontSize: "1.1rem" }}>
+            <p style={{fontSize: "1.1rem"}}>
               Đà Lạt, thành phố ngàn hoa, nổi tiếng với khí hậu se lạnh quanh
               năm, những con dốc lãng mạn, rừng thông bạt ngàn và kiến trúc cổ
               kính. Đây là điểm đến lý tưởng để thư giãn, khám phá thiên nhiên
               và tận hưởng vẻ đẹp bình yên giữa lòng cao nguyên Lâm Viên.
             </p>
+
           </div>
         </div>
       </div>

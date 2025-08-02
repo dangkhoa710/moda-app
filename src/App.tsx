@@ -9,7 +9,8 @@ import An from "./pages/An";
 import { getUserData } from "./utils/localStorage";
 import { Suggestion } from "./pages/Suggestion";
 import "./App.css";
-import TravelSchedule from "./pages/TravelSchedule";
+import SchedulesPage from "./components/SchedulesPage";
+import {SuggestionRedirect} from "./components/SuggestionRedirect";
 
 
 function App() {
@@ -27,7 +28,9 @@ function App() {
         <Route path="/di" element={<Di />} />
         <Route path="/an" element={<An />} />
         <Route path="/suggestion" element={<Suggestion />} />
-        <Route path="/travelRoute" element={<TravelSchedule />} />
+        <Route path="/schedules" element={<SchedulesPage />} />
+        <Route path="/goiy" element={<SuggestionRedirect />} />
+
       </Routes>
     </HashRouter>
   );

@@ -6,3 +6,4 @@ export const getCurrentPosition = (): Promise<{ lat: number; lng: number }> => {
     );
   });
 };
+

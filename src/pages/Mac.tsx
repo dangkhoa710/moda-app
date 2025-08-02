@@ -23,8 +23,8 @@ export default function Mac() {
           gender: getFieldFromStorage('moda_user_info', 'gender') ?? '',
           birthdate: getFieldFromStorage('moda_user_info', 'dob') ?? '',
           mbti: getFieldFromStorage('moda_user_info', 'mbti') ?? '',
-          temperature: getFieldFromStorage('moda_weather_data', 'data.main.temp') ?? '',
-          weather: getFieldFromStorage('moda_weather_data', 'data.weather.0.description') ?? '',
+          temperature: getFieldFromStorage('moda_weather_data', 'data.weather.main.temp') ?? '',
+          weather: getFieldFromStorage('moda_weather_data', 'data.weather.weather.0.description') ?? '',
         });
 
         const today = new Date().toISOString().slice(0, 10); // yyyy-mm-dd
@@ -72,7 +72,7 @@ export default function Mac() {
 
       <Title level={3}>Trang phục gợi ý cho {user.name} ({user.mbti})</Title>
       <h2>Thời tiết:</h2>{' '}
-      <h2>{getFieldFromStorage('moda_weather_data', 'data.weather.0.description')}, {getFieldFromStorage('moda_weather_data', 'data.main.temp')}°C</h2>
+      <h2>{getFieldFromStorage('moda_weather_data', 'data.weather.weather.0.description')} - {getFieldFromStorage('moda_weather_data', 'data.weather.main.temp')}°C</h2>
 
       {loading ? (
         <p>Đang lấy gợi ý ...</p>

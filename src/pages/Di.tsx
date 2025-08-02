@@ -192,7 +192,7 @@ export default function Di() {
             </List.Item>
           );
         }}
-        style={{ maxWidth: 600, marginTop: 16 }}
+        style={{ maxWidth: '100%', marginTop: 16 }}
       />
     </div>
   );

@@ -11,10 +11,10 @@ export interface ScheduleItemProps {
 
 export function ScheduleItem(props: ScheduleItemProps) {
   const { schedule, index, activeIndex, setActiveIndex, pos } = props;
-  console.log("schedule", schedule);
   return (
     <div
       style={{
+        borderRadius: "0.5rem",
         border: "1px solid #ddd",
         padding: 0,
         cursor: "pointer",

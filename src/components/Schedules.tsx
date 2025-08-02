@@ -12,10 +12,13 @@ export interface SchedulesProps {
 export function Schedules(props: SchedulesProps) {
   const { schedules } = props;
   const pos = useCurrentPosition();
-  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const [activeIndex, setActiveIndex] = useState<number>(-1);
   const items = schedules.map((schedule, index) => ({
     children: (
       <div style={{ display: "flex", flexDirection: "column" }}>
+        <span className="time-range">
+          {schedule.fromTime} ~ {schedule.toTime}
+        </span>
         <ScheduleItem
           pos={pos}
           schedule={schedule}
@@ -23,9 +26,6 @@ export function Schedules(props: SchedulesProps) {
           activeIndex={activeIndex}
           setActiveIndex={setActiveIndex}
         />
-        <span className="time-range">
-          {schedule.fromTime} ~ {schedule.toTime}
-        </span>
       </div>
     ),
     dot: <ClockCircleOutlined style={{ fontSize: "16px" }} />,

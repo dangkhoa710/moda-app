@@ -202,7 +202,7 @@ export function TimeLineList() {
     ) : (
       <Schedules schedules={schedules} />
     );
-  }, [schedules]);
+  }, [schedules, items, defaultItem]);
 
   return (
     <div style={{ maxWidth: "80%", padding: "1rem" }}>

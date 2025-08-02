@@ -44,15 +44,17 @@ export default function ModaMenu() {
   }, []);
 
   const cards = [
-    { title: 'Mặc', path: '/mac', color: '#d46b08' },
-    { title: 'Ở', path: '/owr', color: '#1890ff' },
-    { title: 'Đi', path: '/di', color: '#52c41a' },
-    { title: 'Ăn', path: '/an', color: '#fa541c' },
+    { title: 'Gợi ý lịch trình', path: '/suggestion', color: '#F28076',span:24 },
+    { title: 'Mặc', path: '/mac', color: '#FFB6AF',span:12 },
+    { title: 'Ở', path: '/owr', color: '#FAE0C7',span:12 },
+    { title: 'Đi', path: '/di', color: '#FBC193',span:12 },
+    { title: 'Ăn', path: '/an', color: '#4EB09B',span:12 },
   ];
 
   return (
-    <div style={{ padding: 32 }}>
-      <Title level={2}>Chào mừng bạn đến với MODA</Title>
+    <div style={{ padding: 32, backgroundColor: '#f0f2f5', minHeight: '100vh' ,display:'flex',justifyContent:'center', alignItems:'center' }}>
+      <div style={{ minWidth: '66.6667vw',textAlign: 'center' }}>
+      <Title level={2} style={{marginBottom:32}}>Chào mừng bạn đến với MODA</Title>
 
       {loading ? (
         <Spin tip="Đang tải thời tiết..." />
@@ -66,7 +68,7 @@ export default function ModaMenu() {
 
       <Row gutter={[16, 16]}>
         {cards.map((card) => (
-          <Col span={12} key={card.title}>
+          <Col span={card.span} key={card.title}>
             <Card
               hoverable
               style={{ textAlign: 'center', backgroundColor: card.color, color: 'white', fontSize: 30 }}
@@ -77,6 +79,7 @@ export default function ModaMenu() {
           </Col>
         ))}
       </Row>
+      </div>
     </div>
   );
 }

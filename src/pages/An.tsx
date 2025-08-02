@@ -144,7 +144,7 @@ export default function An() {
       )}
 
       <Title style={{marginTop: 16}} level={3}>Các quán gần đây : </Title>
-      <Row justify="space-between" align="middle" style={{marginBottom: 16}}>
+      <Row  justify="space-between" align="middle" style={{marginBottom: 16}}>
         <Col><Title level={3}></Title></Col>
         <Col>
           <Pagination
@@ -157,6 +157,7 @@ export default function An() {
       </Row>
 
       <List
+        id="sdasd"
         bordered
         dataSource={paginatedData}
         renderItem={(item, index) => {
@@ -216,7 +217,7 @@ export default function An() {
             </List.Item>
           );
         }}
-        style={{maxWidth: 600, marginTop: 16}}
+        style={{maxWidth: '100%', marginTop: 16}}
       />
     </div>
   );

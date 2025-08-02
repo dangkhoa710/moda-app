@@ -49,7 +49,7 @@ export default function Quiz() {
         title={`Câu hỏi ${current + 1}`}
         style={{
           maxWidth: '100%',
-          backgroundColor: '#f0f5ff', // 💙 xanh nhạt dịu mắt
+          backgroundColor: '#f0f5ff',
           borderRadius: 8,
           border: '1px solid #d6e4ff',
         }}

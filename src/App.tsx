@@ -9,6 +9,8 @@ import An from "./pages/An";
 import { getUserData } from "./utils/localStorage";
 import { Suggestion } from "./pages/Suggestion";
 import "./App.css";
+import TravelSchedule from "./pages/TravelSchedule";
+
 
 function App() {
   const user = getUserData();
@@ -25,6 +27,7 @@ function App() {
         <Route path="/di" element={<Di />} />
         <Route path="/an" element={<An />} />
         <Route path="/suggestion" element={<Suggestion />} />
+        <Route path="/travelRoute" element={<TravelSchedule />} />
       </Routes>
     </HashRouter>
   );

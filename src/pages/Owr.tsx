@@ -21,7 +21,6 @@ export default function Ows() {
 
   const fetchNewData = async (position: { lat: number; lng: number }) => {
     try {
-      const sheetId = '1zaG788zggVZUVxJ8Piayrh1k6911-vjmp3Tzh41Pg3g';
       const data = await readLocationsFromGoogleSheet(
         process.env.REACT_APP_GOOGLE_SHEET_ID!,
         position.lat,

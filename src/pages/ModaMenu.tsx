@@ -1,4 +1,3 @@
-// File: src/pages/ModaMenu.tsx
 import { useEffect, useState } from 'react';
 import { Card, Col, Row, Typography, Spin, message } from 'antd';
 import { useNavigate } from 'react-router-dom';

@@ -36,6 +36,60 @@
     transform: rotate(360deg);
   }
 }
+.home-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url('https://images.squarespace-cdn.com/content/v1/56ec44b41d07c0db86a517e5/1540462662985-IWSQMNBVTKPTG9HQOE2S/DSC04770-final.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.form-container {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 32px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}
+
+
+.input-field {
+    width: 100%;
+    margin-bottom: 16px;
+}
+
+.radio-group {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 24px;
+}
+
+.radio-group .ant-radio-button-wrapper {
+    font-size: 16px;  /* Thay đổi kích thước chữ */
+    font-weight: 600;  /* Làm chữ đậm */
+    color: #333;  /* Màu chữ mặc định */
+}
+
+.radio-group .ant-radio-button-wrapper:hover {
+    color: #1890ff;  /* Màu chữ khi hover */
+}
+
+.radio-group .ant-radio-button-wrapper-checked {
+    color: #1890ff;  /* Màu chữ khi đã được chọn */
+    font-weight: 700;  /* Làm chữ đậm hơn khi chọn */
+}
+
+
+.submit-button {
+    width: 100%;
+}
 
 
 .time-range {

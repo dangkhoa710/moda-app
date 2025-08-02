@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Input, Button, Typography, DatePicker, Radio, message } from 'antd';
-import { Dayjs } from 'dayjs'; // THÊM Dayjs vào import
+import { Dayjs } from 'dayjs';
 
 const { Title } = Typography;
 
@@ -30,39 +30,50 @@ export default function Home() {
   };
 
   return (
-    <div style={{ padding: 32 }}>
-      <Title level={2}>Chào bạn! Cho mình biết thông tin nhé:</Title>
+    <div className="home-container">
+      <div className="form-container">
+        <Title level={2}>Chào bạn!</Title>
+        <Title level={3}>Cho mình biết thông tin nhé:</Title>
 
-      <Input
-        placeholder="Nhập tên"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        style={{ width: 300, marginBottom: 16 }}
-      />
-      <br />
+        <Input
+          placeholder="Nhập tên"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="input-field"
+        />
+        <br />
 
-      <DatePicker
-        placeholder="Chọn ngày sinh"
-        value={dob}
-        onChange={(date) => setDob(date)}
-        style={{ width: 300, marginBottom: 16 }}
-      />
-      <br />
+        <DatePicker
+          placeholder="Chọn ngày sinh"
+          value={dob}
+          onChange={(date) => setDob(date)}
+          className="input-field"
+        />
+        <br />
 
-      <Radio.Group
-        onChange={(e) => setGender(e.target.value)}
-        value={gender}
-        style={{ marginBottom: 24 }}
-      >
-        <Radio value="male">Nam</Radio>
-        <Radio value="female">Nữ</Radio>
-        <Radio value="other">Khác</Radio>
-      </Radio.Group>
-      <br />
+        <Radio.Group
+          onChange={(e) => setGender(e.target.value)}
+          value={gender}
+          className="radio-group"
+          style={{ marginBottom: 24 }}
+        >
+          <Radio value="male">Nam</Radio>
+          <Radio value="female">Nữ</Radio>
+          <Radio value="other">Khác</Radio>
+        </Radio.Group>
+        <br />
 
-      <Button type="primary" onClick={handleStart}>
-        Bắt đầu trắc nghiệm MBTI
-      </Button>
+        <Button
+          type="primary"
+          onClick={handleStart}
+          className="submit-button"
+          style={{
+            backgroundColor: '#f28076',
+          }}
+        >
+          Bắt đầu trắc nghiệm MBTI
+        </Button>
+      </div>
     </div>
   );
 }

@@ -24,10 +24,7 @@ export default function Mac() {
           birthdate: getFieldFromStorage("moda_user_info", "dob") ?? "",
           mbti: getFieldFromStorage("moda_user_info", "mbti") ?? "",
           temperature:
-            getFieldFromStorage(
-              "moda_weather_data",
-              "data.weather.main.temp"
-            ) ?? "",
+            getFieldFromStorage("moda_weather_data", "data.weather.main.temp") ?? "",
           weather:
             getFieldFromStorage(
               "moda_weather_data",

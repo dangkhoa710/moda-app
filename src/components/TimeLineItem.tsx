@@ -29,7 +29,7 @@ export function TimeLineItem(props: TimeLineItemProps) {
   const targetList = [
     { value: "An", label: "Đi ăn" },
     { value: "Di", label: "Đi chơi" },
-    { value: "Owr", label: "Ở" },
+    { value: "Off", label: "Nghỉ ngơi" },
   ];
 
   return (

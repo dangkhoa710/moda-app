@@ -11,7 +11,7 @@ import {LocationItem, readLocationsFromGoogleSheetWithoutDistance} from "../serv
 import {getCurrentPosition } from "../utils/geo";
 import { getNearestLocation } from '../utils/location';
 import { useEffect } from "react";
-
+import {getFieldFromStorage} from "../utils/localStorage";
 
 export interface InformationState {
   id?: string;
@@ -178,6 +178,18 @@ export function TimeLineList() {
       const usedLocations: Set<string> = new Set();
 
       for (const item of scheduleInput) {
+        if (item.target === "Off") {
+          updatedSchedule.push({
+            ...item,
+            location_name: "Nghỉ ngơi",
+            location_lat: "",
+            location_lng: "",
+            location_address: "",
+            location_note: "Thời gian thư giãn, nghỉ ngơi.",
+          });
+          continue;
+        }
+
         let matchedLocation: LocationItem | null = null;
         let locationList: LocationItem[] = [];
 
@@ -190,11 +202,6 @@ export function TimeLineList() {
           locationList = await readLocationsFromGoogleSheetWithoutDistance(
             process.env.REACT_APP_GOOGLE_SHEET_ID!,
             'Đi'
-          );
-        } else if (item.target === 'Owr') {
-          locationList = await readLocationsFromGoogleSheetWithoutDistance(
-            process.env.REACT_APP_GOOGLE_SHEET_ID!,
-            'Ở'
           );
         }
 
@@ -303,29 +310,21 @@ export function TimeLineList() {
   }, [schedules, items, defaultItem]);
 
   return (
-    <div style={{ display: "flex", padding: "1rem"}}>
-      <div style={{ display: "flex", margin: "0 auto", maxWidth: "1000px" }}>
-        <div style={{ display: "flex", flexDirection: "column" , width: "100%"}}>
-          <div style={{ marginBottom: "1rem" , width: "100%"}}>
+    <div className="timeline-page">
+      <div className="main-container">
+        <div className="left-section">
+          <div style={{ marginBottom: "1rem", width: "100%" }}>
             <Button onClick={() => navigate('/menu')} style={{ marginBottom: 16 }}>
               ← Quay lại
             </Button>
           </div>
-          <h1 style={{ whiteSpace: "nowrap" }}>Lập kế hoạch du lịch Đà Lạt</h1>
+          <h1 style={{ whiteSpace: "nowrap" }}>Lập kế hoạch du lịch {getFieldFromStorage("moda_weather_data", "data.city")}</h1>
           <span style={{ marginBottom: "2rem", fontSize: "1.1rem" }}>
-            Thời gian hoạt động
-          </span>
+          Thời gian hoạt động
+        </span>
           {content}
         </div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            marginLeft: "3rem",
-            width: "30%"
-          }}
-        >
+        <div className="right-section">
           <div
             style={{
               backgroundColor: "#ffefdf",
@@ -344,7 +343,8 @@ export function TimeLineList() {
               alt="Đà Lạt"
               style={{
                 height: "12rem",
-                width: "15rem",
+                width: "100%",
+                maxWidth: "15rem",
                 border: "2px solid #e0e0e0",
                 boxShadow: "0 10px 20px rgba(0, 0, 0, 0.1)",
                 objectFit: "cover",
@@ -358,16 +358,15 @@ export function TimeLineList() {
               }}
             >
               🏞️ Đà Lạt
-              <br/>
+              <br />
               Thành phố ngàn hoa
             </h2>
-            <p style={{fontSize: "1.1rem"}}>
+            <p style={{ fontSize: "1.1rem" }}>
               Đà Lạt, thành phố ngàn hoa, nổi tiếng với khí hậu se lạnh quanh
               năm, những con dốc lãng mạn, rừng thông bạt ngàn và kiến trúc cổ
               kính. Đây là điểm đến lý tưởng để thư giãn, khám phá thiên nhiên
               và tận hưởng vẻ đẹp bình yên giữa lòng cao nguyên Lâm Viên.
             </p>
-
           </div>
         </div>
       </div>

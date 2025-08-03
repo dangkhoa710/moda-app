@@ -98,3 +98,62 @@
   color: #4EB09B;
 }
 
+/* Timeline responsive layout */
+.timeline-page {
+    padding: 1rem;
+}
+
+.timeline-page .main-container {
+    display: flex;
+    flex-direction: row;
+    margin: 0 auto;
+    max-width: 1000px;
+}
+
+.timeline-page .left-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-right: 2rem;
+}
+
+.timeline-page .right-section {
+    width: 30%;
+}
+
+/* Mobile adjustments */
+@media screen and (max-width: 768px) {
+    .timeline-page .main-container {
+        flex-direction: column;
+    }
+
+    .timeline-page .left-section {
+        width: 100%;
+        margin-right: 0;
+    }
+
+    .timeline-page .right-section {
+        width: 100%;
+        margin-top: 1.5rem;
+    }
+
+    .timeline-page .right-section img {
+        width: 100%;
+        height: auto;
+    }
+
+    .timeline-page h1 {
+        font-size: 1.5rem;
+    }
+
+    .timeline-page .time-range {
+        font-size: 1rem;
+    }
+
+    .timeline-page button {
+        font-size: 1rem;
+    }
+}
+
+

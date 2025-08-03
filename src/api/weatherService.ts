@@ -21,6 +21,7 @@ export const fetchWeatherByCity = async (city: string): Promise<WeatherData | nu
     );
     if (!res.ok) throw new Error('Request failed');
     const data = await res.json();
+    console.log('Weather data:', data);
     return data;
   } catch (error) {
     console.error('Lỗi fetch thời tiết:', error);

@@ -6,7 +6,7 @@ import { generateGemini } from "../api/geminiService";
 import { geminiPromptTemplateMac } from "../templates/geminiPromptTemplateMac";
 import ImageGenerator from "../components/AsyncImageGenerator";
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 export default function Mac() {
   const navigate = useNavigate();
@@ -24,11 +24,14 @@ export default function Mac() {
           birthdate: getFieldFromStorage("moda_user_info", "dob") ?? "",
           mbti: getFieldFromStorage("moda_user_info", "mbti") ?? "",
           temperature:
-            getFieldFromStorage("moda_weather_data", "data.main.temp") ?? "",
+            getFieldFromStorage(
+              "moda_weather_data",
+              "data.weather.main.temp"
+            ) ?? "",
           weather:
             getFieldFromStorage(
               "moda_weather_data",
-              "data.weather.0.description"
+              "data.weather.weather.0.description"
             ) ?? "",
         });
 
@@ -44,7 +47,6 @@ export default function Mac() {
             localStorage.removeItem(cacheKey);
           }
         }
-
         if (!suggestion) {
           const result = await generateGemini(prompt);
           if (result) {
@@ -69,10 +71,25 @@ export default function Mac() {
   }, []);
   const prompt = useMemo(
     () => [
-      `Create clothes which has to have colors ${
-        outfit?.colors?.length > 0 ? `with ${outfit.colors.join(", ")}` : null
-      }`,
-      outfit?.outfit_en,
+      `Design an outfit that incorporates exactly the colors ${outfit?.colors.join(
+        ", "
+      )} in the clothing items.`,
+      `User  go on a vacation to ${getFieldFromStorage(
+        "moda_weather_data",
+        "data.city"
+      )}`,
+      `User have gender ${getFieldFromStorage("moda_user_info", "gender")} `,
+      `and birth date ${getFieldFromStorage("moda_user_info", "dob")} `,
+      `the weather is ${getFieldFromStorage(
+        "moda_weather_data",
+        "data.weather.weather.0.description"
+      )} `,
+      `and temperature is ${getFieldFromStorage(
+        "moda_weather_data",
+        "data.weather.main.temp"
+      )}°C`,
+      `${outfit?.outfit_en}.`,
+      `Make sure the specified colors are clearly present in the sweater, jacket, or pants.`,
     ],
     [outfit]
   )
@@ -88,8 +105,11 @@ export default function Mac() {
       </Title>
       <h2>Thời tiết:</h2>{" "}
       <h2>
-        {getFieldFromStorage("moda_weather_data", "data.weather.0.description")}
-        , {getFieldFromStorage("moda_weather_data", "data.main.temp")}°C
+        {getFieldFromStorage(
+          "moda_weather_data",
+          "data.weather.weather.0.description"
+        )}{" "}
+        - {getFieldFromStorage("moda_weather_data", "data.weather.main.temp")}°C
       </h2>
       {loading ? (
         <p>Đang lấy gợi ý ...</p>

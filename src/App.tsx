@@ -10,8 +10,7 @@ import { getUserData } from "./utils/localStorage";
 import { Suggestion } from "./pages/Suggestion";
 import "./App.css";
 import SchedulesPage from "./components/SchedulesPage";
-import {SuggestionRedirect} from "./components/SuggestionRedirect";
-
+import { SuggestionRedirect } from "./components/SuggestionRedirect";
 
 function App() {
   const user = getUserData();
@@ -30,7 +29,6 @@ function App() {
         <Route path="/suggestion" element={<Suggestion />} />
         <Route path="/schedules" element={<SchedulesPage />} />
         <Route path="/goiy" element={<SuggestionRedirect />} />
-
       </Routes>
     </HashRouter>
   );

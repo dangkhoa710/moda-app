@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/moda-app/static/css/main.7b2a56e0.css",
+    "main.js": "/moda-app/static/js/main.7708d5a3.js",
+    "static/js/238.418d2116.chunk.js": "/moda-app/static/js/238.418d2116.chunk.js",
+    "static/js/453.c7328c14.chunk.js": "/moda-app/static/js/453.c7328c14.chunk.js",
+    "static/media/da_lat.png": "/moda-app/static/media/da_lat.60a15d92d68d9e4a4bf3.png",
+    "index.html": "/moda-app/index.html",
+    "main.7b2a56e0.css.map": "/moda-app/static/css/main.7b2a56e0.css.map",
+    "main.7708d5a3.js.map": "/moda-app/static/js/main.7708d5a3.js.map",
+    "238.418d2116.chunk.js.map": "/moda-app/static/js/238.418d2116.chunk.js.map",
+    "453.c7328c14.chunk.js.map": "/moda-app/static/js/453.c7328c14.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7b2a56e0.css",
+    "static/js/main.7708d5a3.js"
+  ]
+}

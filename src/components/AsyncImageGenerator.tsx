@@ -105,8 +105,9 @@ function ImageGenerator({ systemPrompt }: ImageGeneratorProps) {
           marginTop: "1rem",
           width: "100%",
           height: "2.5rem",
-          backgroundColor: "#52c41a",
-          borderColor: "#52c41a",
+          fontWeight: "bold",
+          backgroundColor: "#4EB09B",
+          borderColor: "#4EB09B",
           borderRadius: "0.5rem",
           boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
         }}

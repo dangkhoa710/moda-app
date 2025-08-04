@@ -34,11 +34,17 @@ export default function Quiz() {
 
   if (current === mbtiQuestions.length) {
     return (
-      <div style={{ padding: 32 }}>
-        <Title level={3}>Xác định MBTI hoàn tất!</Title>
-        <Button type="primary" onClick={handleFinish}>
-          Xem gợi ý từ MODA
-        </Button>
+      <div className="popup-overlay">
+        <div className="popup-box">
+          <Title level={3}>Xác định MBTI hoàn tất!</Title>
+          <Button
+            type="primary"
+            style={{ backgroundColor: "#F28076" }}
+            onClick={handleFinish}
+          >
+            Bắt đầu sử dụng Moda
+          </Button>
+        </div>
       </div>
     );
   }
